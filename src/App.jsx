@@ -503,13 +503,14 @@ const CSS = `
 .lw{
   --bg:#101317; --panel:#191d23; --panel2:#20252c; --line:#2c333c;
   --ink:#f0f3f4; --mute:#8d959e; --ok:#6fd08c; --warn:#e0705f;
-  background:var(--bg); color:var(--ink); min-height:100vh;
+  background:var(--bg); color:var(--ink); min-height:100vh; min-height:100svh;
   font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
   padding-bottom:120px;
 }
 .lw h1,.lw h2,.lw .disp{font-family:'Oswald','IBM Plex Sans',sans-serif;font-weight:600;letter-spacing:.02em}
 .wrap{max-width:560px;margin:0 auto;padding:0 14px}
-.top{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,var(--bg) 78%,transparent);padding:14px 0 10px}
+.top{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,var(--bg) 78%,transparent);
+  padding:calc(14px + env(safe-area-inset-top)) 0 10px}
 .brand{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
 .brand h1{font-size:20px;margin:0;text-transform:uppercase;letter-spacing:.08em}
 .brand span{color:var(--mute);font-size:12px}
@@ -547,7 +548,8 @@ select,.inp{width:100%;background:var(--bg);color:var(--ink);border:1px solid va
   border-radius:8px;padding:9px;font-size:13px;font-family:inherit}
 .note{color:var(--mute);font-size:11.5px;margin-top:8px;line-height:1.5}
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(16,19,23,.94);
-  backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px 14px 16px}
+  backdrop-filter:blur(8px);border-top:1px solid var(--line);
+  padding:10px 14px calc(16px + env(safe-area-inset-bottom))}
 .barin{max-width:560px;margin:0 auto;display:flex;gap:8px;align-items:center}
 .btn{flex:1;padding:13px;border-radius:10px;border:1px solid var(--line);background:var(--panel);
   color:var(--ink);font-family:'Oswald',sans-serif;font-size:14px;text-transform:uppercase;
@@ -559,7 +561,8 @@ select,.inp{width:100%;background:var(--bg);color:var(--ink);border:1px solid va
 .timer .lab{color:var(--mute);font-size:11px}
 .track{flex:1;height:4px;background:var(--line);border-radius:2px;overflow:hidden}
 .fill{height:100%;transition:width .9s linear}
-.sheet{position:fixed;inset:0;z-index:40;background:rgba(8,10,12,.72);overflow-y:auto;padding:40px 0 60px}
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(8,10,12,.72);overflow-y:auto;
+  padding:calc(40px + env(safe-area-inset-top)) 0 calc(60px + env(safe-area-inset-bottom))}
 .sheetin{max-width:560px;margin:0 auto;background:var(--panel);border:1px solid var(--line);
   border-radius:16px;padding:18px}
 .sheetin h2{font-size:17px;margin:0 0 4px;text-transform:uppercase;letter-spacing:.07em}
