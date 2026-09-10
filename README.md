@@ -1,89 +1,94 @@
 # Calisthenics Tracker
 
-A phone-first circuit tracker for the LW Calisthenics starter program. Pull, push and leg
-workouts, rep targets computed from your own benchmark test, rest timers, progression swaps and
-a dated history log. Runs entirely in the browser, no account, no backend.
+A simple, phone-first workout tracker for the LW Calisthenics starter program. It turns your
+benchmark results into practical pull, push, and leg sessions, then helps you record the work and
+progress over time.
 
-## Put it online
+The app runs in the browser with no account and no backend. It is designed to be opened before a
+workout and used with one hand between sets.
 
-1. Create a new **public** repo on GitHub. Name it whatever you like — the app uses relative
-   paths, so the repo name doesn't need to be hardcoded anywhere.
-2. Push these files to the `main` branch:
+## What it does
 
-   ```bash
-   git init
-   git add .
-   git commit -m "Calisthenics tracker"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<your-repo>.git
-   git push -u origin main
-   ```
+### Set up your starting point
 
-3. In the repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-4. The workflow in `.github/workflows/deploy.yml` builds and publishes on every push to `main`.
-   First run takes a minute or two; the URL appears under the Actions tab and on the Pages
-   settings screen, as `https://<your-username>.github.io/<your-repo>/`.
+Enter a benchmark for each exercise and choose your rest periods. The app calculates working
+targets from those benchmarks, so the program adapts to your current level instead of assuming a
+fixed number of reps. A deload option halves targets when you need an easier week.
 
-You never need to run a build yourself — GitHub does it.
+### Follow each workout
 
-## Put it on your phone
+Choose a pull, push, or legs workout and work through the circuit. Each exercise shows its target,
+an input for the reps you completed, and a completion button. Completing a set starts the rest
+timer automatically, with longer rest when a circuit set is finished.
 
-Open the Pages URL on your phone, then add it to your home screen:
+Tap an exercise to see form cues, its progression ladder, and an optional target override for the
+current set.
 
-- **iOS Safari** — Share → Add to Home Screen
-- **Android Chrome** — ⋮ menu → Add to Home screen / Install app
+### Track progress
 
-It launches full screen with no browser chrome, and the service worker caches everything, so it
-opens and works with no signal. Only the web fonts need the network; without them it falls back
-to system fonts.
+The Progress view turns the program's progression rules into useful actions:
 
-## Your data
+- Add a rep to every benchmark when the current level is ready to increase.
+- See exercises that have reached 15 reps and may be ready for a harder variation.
+- Track how many weeks have passed since your last deload.
+- Explore the skill pathways supported by the basic exercises.
 
-Everything lives in `localStorage` on that one device and browser. Nothing is uploaded anywhere.
+### Review your training history
 
-That means: clearing site data, switching phones, or using a different browser loses your log.
-**History → Export backup** writes a JSON file; **Import backup** restores it. Worth doing every
-few weeks.
+History shows completed sessions by date and workout. Expand a session to see every exercise and
+the reps recorded. The workout view also compares each exercise with your most recent session.
 
-## Working on it locally
+## Privacy and backups
+
+Your settings and history are stored in `localStorage` on the device and browser you use. Nothing
+is uploaded to a server and no account is required.
+
+Clearing browser data, changing browsers, or moving to another device will remove the local log.
+Use **History > Export backup** to save a JSON backup, and **History > Import backup** to restore
+one.
+
+## Install as an app
+
+The project is a progressive web app. Open the deployed site on your phone and add it to your home
+screen:
+
+- iOS Safari: Share > Add to Home Screen
+- Android Chrome: menu > Add to Home screen or Install app
+
+The service worker caches the app so it remains usable without a signal after it has been opened.
+
+## Run locally
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # production build into dist/
-npm run preview  # serve the production build
+npm run dev
 ```
 
-All the app code is in `src/App.jsx`. The program data sits at the top of that file:
+Other useful commands:
 
-- `EX` — every exercise: form cues, progression ladder, benchmark default
-- `WORKOUTS` — the circuit sets, each item carrying an offset from your benchmark
-- `PATHWAYS` — the skill ladders shown in the Progress sheet
+```bash
+npm run build    # create a production build in dist/
+npm run preview  # serve the production build locally
+```
 
-Rep targets are never stored as fixed numbers. Each set item holds an offset (`off: -2`), applied
-to your benchmark for that exercise, which is how the program says to build it. Change a
-benchmark and every set rebuilds.
+## Deploy to GitHub Pages
 
-## What's in the app
+The repository includes a GitHub Actions workflow in `.github/workflows/deploy.yml`. Set the
+repository's Pages source to **GitHub Actions**, then every push to `main` will build and deploy
+the app.
 
-**Setup** — enter your benchmark test results. Rest times between exercises and between sets.
-Deload toggle, which halves every target.
+## Project data
 
-**Main screen** — one tab per workout. Each exercise shows its target, a stepper to log what you
-actually did, and a tick that starts the rest timer automatically, using the longer rest when a
-circuit set finishes. Tap an exercise name for form cues, the progression ladder, and a per-set
-target override.
+The app is implemented in `src/App.jsx`. Its main data structures are:
 
-**Progress** — the four progression rules from the program, each wired to something you can act
-on: a button that adds a rep to every benchmark, a list of exercises you've taken to 15 reps and
-should now make harder, a counter of weeks since your last deload, and the skill pathways the
-basics feed into.
+- `EX`: exercise cues, progression ladders, and benchmark defaults
+- `WORKOUTS`: circuit definitions and benchmark offsets for each set
+- `PATHWAYS`: skill progressions shown in the Progress view
 
-**History** — sessions by date, newest first, per workout. Expand any one for the per-exercise
-numbers. The main screen also shows each exercise against your last session of that workout.
+Targets are calculated from the saved benchmark and each set's offset. Updating a benchmark
+rebuilds the relevant workout targets automatically.
 
 ## Credit
 
-The program itself — exercises, rep schemes, form cues and progression pathways — is from the LW
-Calisthenics starter program. This is just a tracker built around it. Don't redistribute the
-program content; keep this repo for your own use, or strip the data files if you make it public.
+The exercises, rep schemes, form cues, and progression pathways come from the LW Calisthenics
+starter program. This project is a browser tracker built around that program.
